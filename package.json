@@ -1,0 +1,40 @@
+{
+  "name": "designforge-next",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "@anthropic-ai/sdk": "^0.90.0",
+    "@babel/parser": "^7.29.2",
+    "@babel/standalone": "^7.27.0",
+    "@carbon/react": "^1.71.0",
+    "@carbon/styles": "^1.71.0",
+    "@chakra-ui/react": "^2.10.9",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mantine/core": "^7.17.8",
+    "@mantine/hooks": "^7.17.8",
+    "@mui/material": "^9.0.0",
+    "antd": "^6.3.6",
+    "archiver": "^7.0.1",
+    "bcryptjs": "^2.4.3",
+    "framer-motion": "^12.38.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.2.0",
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.0.3"
+  }
+}
