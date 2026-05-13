@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { CONCEPT_STEPS } from '@/lib/generationService';
+import { CONCEPT_STEPS } from '@/lib/generationSteps';
 import { useGenerationPolling } from './useGenerationPolling';
 
 // Derive step labels from the authoritative list in generationService.
