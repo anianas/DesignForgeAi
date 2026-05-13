@@ -21,9 +21,9 @@ export const ToastProvider = ({ children }) => {
     <ToastContext.Provider value={value}>
       {children}
       <div className="toast-container" role="status" aria-live="polite">
-        {toasts.map((t) => (
-          <div key={t.id} className={`toast toast-${t.variant}`}>
-            <span>{t.message}</span>
+        {toasts.map((toast) => (
+          <div key={toast.id} className={`toast toast-${toast.variant}`}>
+            <span>{toast.message}</span>
           </div>
         ))}
       </div>

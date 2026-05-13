@@ -11,13 +11,8 @@ export async function GET(req) {
   return jsonResponse({ projects: all });
 }
 
-// POST /api/project — create. (Original Express had POST /project/create, but we
-// can keep both — we expose /create for compat below.)
-export async function POST(req) {
-  return createHandler(req);
-}
-
-const createHandler = async (req) => {
+// Also exported as `createHandler` for the compat alias at /api/project/create.
+export const createHandler = async (req) => {
   const { user, response } = requireUser(req);
   if (response) return response;
 
@@ -51,4 +46,4 @@ const createHandler = async (req) => {
   return jsonResponse({ project }, 201);
 };
 
-export { createHandler };
+export const POST = createHandler;

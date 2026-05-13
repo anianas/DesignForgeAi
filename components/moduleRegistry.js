@@ -14,7 +14,7 @@ const MODULES = {};
 const STYLE_HOSTS = {};
 const CSS_TEXT = {};
 
-const set = (name, mod) => {
+const registerModule = (name, mod) => {
   if (mod && typeof mod === 'object' && !('default' in mod)) {
     MODULES[name] = { ...mod, default: mod };
   } else {
@@ -22,9 +22,9 @@ const set = (name, mod) => {
   }
 };
 
-set('react', React);
-set('react-dom', ReactDOM);
-set('react-dom/client', ReactDOMClient);
+registerModule('react', React);
+registerModule('react-dom', ReactDOM);
+registerModule('react-dom/client', ReactDOMClient);
 
 // Capture <style> tags injected into document.head while `fn` runs — used to
 // extract a library's CSS-file content (Mantine, Carbon) so we can re-inject
@@ -45,10 +45,10 @@ const loaders = {
       import('@emotion/styled'),
       import('@emotion/cache'),
     ]);
-    set('@mui/material', mui);
-    set('@emotion/react', emotionReact);
-    set('@emotion/styled', emotionStyled);
-    set('@emotion/cache', emotionCache);
+    registerModule('@mui/material', mui);
+    registerModule('@emotion/react', emotionReact);
+    registerModule('@emotion/styled', emotionStyled);
+    registerModule('@emotion/cache', emotionCache);
     STYLE_HOSTS.material = { type: 'emotion', key: 'mui' };
   },
   ant: async () => {
@@ -56,8 +56,8 @@ const loaders = {
       import('antd'),
       import('@ant-design/cssinjs'),
     ]);
-    set('antd', antd);
-    set('@ant-design/cssinjs', cssinjs);
+    registerModule('antd', antd);
+    registerModule('@ant-design/cssinjs', cssinjs);
     STYLE_HOSTS.ant = { type: 'antd-cssinjs' };
   },
   carbon: async () => {
@@ -66,7 +66,7 @@ const loaders = {
         import('@carbon/react'),
         import('@carbon/styles/css/styles.css'),
       ]);
-      set('@carbon/react', carbon);
+      registerModule('@carbon/react', carbon);
     });
     STYLE_HOSTS.carbon = { type: 'css-text', cssKey: 'carbon' };
   },
@@ -78,11 +78,11 @@ const loaders = {
       import('framer-motion'),
       import('@emotion/cache'),
     ]);
-    set('@chakra-ui/react', chakra);
-    set('@emotion/react', emotionReact);
-    set('@emotion/styled', emotionStyled);
-    set('framer-motion', framer);
-    set('@emotion/cache', emotionCache);
+    registerModule('@chakra-ui/react', chakra);
+    registerModule('@emotion/react', emotionReact);
+    registerModule('@emotion/styled', emotionStyled);
+    registerModule('framer-motion', framer);
+    registerModule('@emotion/cache', emotionCache);
     STYLE_HOSTS.chakra = { type: 'emotion', key: 'chakra' };
   },
   mantine: async () => {
@@ -92,8 +92,8 @@ const loaders = {
         import('@mantine/hooks'),
         import('@mantine/core/styles.css'),
       ]);
-      set('@mantine/core', mantine);
-      set('@mantine/hooks', mantineHooks);
+      registerModule('@mantine/core', mantine);
+      registerModule('@mantine/hooks', mantineHooks);
     });
     STYLE_HOSTS.mantine = { type: 'css-text', cssKey: 'mantine' };
   },

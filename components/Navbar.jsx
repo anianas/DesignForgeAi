@@ -8,6 +8,11 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
 
+  const handleSignOut = () => {
+    logout();
+    router.push('/');
+  };
+
   return (
     <nav className="navbar">
       <Link href={user ? '/dashboard' : '/'} className="navbar-logo">
@@ -23,13 +28,7 @@ const Navbar = () => {
             <span className="text-sm text-muted" style={{ marginRight: 8 }}>
               {user.email}
             </span>
-            <button
-              className="btn btn-ghost btn-sm"
-              onClick={() => {
-                logout();
-                router.push('/');
-              }}
-            >
+            <button className="btn btn-ghost btn-sm" onClick={handleSignOut}>
               Sign out
             </button>
           </>

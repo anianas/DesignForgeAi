@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { users } from '@/lib/store';
-import { signToken, jsonResponse } from '@/lib/auth';
+import { signToken, jsonResponse, serializeUser } from '@/lib/auth';
 
 export async function POST(req) {
   const { name, email, password } = await req.json().catch(() => ({}));
@@ -30,8 +30,5 @@ export async function POST(req) {
   await users.set(email, user);
 
   const token = signToken({ userId: user.id, email: user.email });
-  return jsonResponse({
-    token,
-    user: { id: user.id, name: user.name, email: user.email, plan: user.plan },
-  }, 201);
+  return jsonResponse({ token, user: serializeUser(user) }, 201);
 }

@@ -159,6 +159,79 @@ const StatusOverlay = ({ message }) => (
   </div>
 );
 
+const LoadingOverlay = ({ dsKey }) => (
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'rgba(250,250,250,0.85)',
+      color: '#888',
+      fontSize: 13,
+    }}
+  >
+    Loading {dsKey} preview…
+  </div>
+);
+
+const ErrorOverlay = ({ error }) => {
+  const isSyntax =
+    error && (error.name === 'SyntaxError' || /Unexpected token|JSX/.test(error.message || ''));
+  const summary = isSyntax
+    ? "Claude's output had a syntax error. This usually fixes itself on a re-skin."
+    : 'Something went wrong rendering the preview.';
+  const detail = (error && error.message) || String(error);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        padding: 24,
+        overflow: 'auto',
+        background: '#fff5f5',
+        color: '#7f1d1d',
+        fontSize: 14,
+        lineHeight: 1.5,
+      }}
+    >
+      <div style={{ fontWeight: 600, marginBottom: 6, fontSize: 15 }}>{summary}</div>
+      <div style={{ marginBottom: 16, color: '#9b1c1c' }}>
+        Try clicking <strong>Re-skin</strong> at the top of the UI tab to regenerate.
+      </div>
+      <details>
+        <summary
+          style={{
+            cursor: 'pointer',
+            fontSize: 12,
+            color: '#9b1c1c',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Technical detail
+        </summary>
+        <pre
+          style={{
+            marginTop: 8,
+            padding: 12,
+            background: 'rgba(0,0,0,0.04)',
+            borderRadius: 6,
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+            fontSize: 12,
+            whiteSpace: 'pre-wrap',
+            color: '#7f1d1d',
+          }}
+        >
+          {detail}
+        </pre>
+      </details>
+    </div>
+  );
+};
+
 const LivePreview = ({ dsKey, code }) => {
   const iframeRef = useRef(null);
   const [stage, setStage] = useState(STAGES.idle);
@@ -222,76 +295,8 @@ const LivePreview = ({ dsKey, code }) => {
           display: stage === STAGES.error ? 'none' : 'block',
         }}
       />
-      {stage === STAGES.loading && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(250,250,250,0.85)',
-            color: '#888',
-            fontSize: 13,
-          }}
-        >
-          Loading {dsKey} preview…
-        </div>
-      )}
-      {stage === STAGES.error && (() => {
-        const isSyntax =
-          error && (error.name === 'SyntaxError' || /Unexpected token|JSX/.test(error.message || ''));
-        const summary = isSyntax
-          ? "Claude's output had a syntax error. This usually fixes itself on a re-skin."
-          : "Something went wrong rendering the preview.";
-        const detail = (error && error.message) || String(error);
-        return (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              padding: 24,
-              overflow: 'auto',
-              background: '#fff5f5',
-              color: '#7f1d1d',
-              fontSize: 14,
-              lineHeight: 1.5,
-            }}
-          >
-            <div style={{ fontWeight: 600, marginBottom: 6, fontSize: 15 }}>{summary}</div>
-            <div style={{ marginBottom: 16, color: '#9b1c1c' }}>
-              Try clicking <strong>Re-skin</strong> at the top of the UI tab to regenerate.
-            </div>
-            <details>
-              <summary
-                style={{
-                  cursor: 'pointer',
-                  fontSize: 12,
-                  color: '#9b1c1c',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                Technical detail
-              </summary>
-              <pre
-                style={{
-                  marginTop: 8,
-                  padding: 12,
-                  background: 'rgba(0,0,0,0.04)',
-                  borderRadius: 6,
-                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                  fontSize: 12,
-                  whiteSpace: 'pre-wrap',
-                  color: '#7f1d1d',
-                }}
-              >
-                {detail}
-              </pre>
-            </details>
-          </div>
-        );
-      })()}
+      {stage === STAGES.loading && <LoadingOverlay dsKey={dsKey} />}
+      {stage === STAGES.error && <ErrorOverlay error={error} />}
     </div>
   );
 };

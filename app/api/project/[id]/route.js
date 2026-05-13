@@ -1,14 +1,13 @@
 import { projects, generationJobs } from '@/lib/store';
-import { requireUser, jsonResponse } from '@/lib/auth';
+import { requireUser, jsonResponse, fetchOwnedProject } from '@/lib/auth';
 
 export async function GET(req, { params }) {
   const { user, response } = requireUser(req);
   if (response) return response;
-  const { id } = await params;
 
-  const project = await projects.get(id);
-  if (!project) return jsonResponse({ error: 'Project not found' }, 404);
-  if (project.userId !== user.userId) return jsonResponse({ error: 'Access denied' }, 403);
+  const { id } = await params;
+  const { project, error } = await fetchOwnedProject(id, user.userId);
+  if (error) return error;
 
   let jobProgress = null;
   const isInProgress =
@@ -27,17 +26,17 @@ export async function GET(req, { params }) {
       }
     }
   }
+
   return jsonResponse({ project, jobProgress });
 }
 
 export async function DELETE(req, { params }) {
   const { user, response } = requireUser(req);
   if (response) return response;
-  const { id } = await params;
 
-  const project = await projects.get(id);
-  if (!project) return jsonResponse({ error: 'Project not found' }, 404);
-  if (project.userId !== user.userId) return jsonResponse({ error: 'Access denied' }, 403);
+  const { id } = await params;
+  const { project, error } = await fetchOwnedProject(id, user.userId);
+  if (error) return error;
 
   project.status = 'deleted';
   project.deletedAt = new Date().toISOString();

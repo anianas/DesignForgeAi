@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 const Modal = ({ open, onClose, children }) => {
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => e.key === 'Escape' && onClose?.();
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    const handleKeyDown = (e) => e.key === 'Escape' && onClose?.();
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [open, onClose]);
 
   if (!open) return null;

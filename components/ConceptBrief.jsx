@@ -33,6 +33,109 @@ const Bullet = ({ children }) => (
   </li>
 );
 
+const HeroSection = ({ name, tagline }) => (
+  <div
+    className="card"
+    style={{
+      padding: '40px 32px',
+      background:
+        'linear-gradient(135deg, rgba(212,165,116,0.08) 0%, var(--bg-elevated) 100%)',
+      border: '1px solid var(--border)',
+    }}
+  >
+    <div
+      className="text-xs mono mb-3"
+      style={{ color: 'var(--accent)', letterSpacing: '0.12em' }}
+    >
+      PRODUCT CONCEPT
+    </div>
+    <h1
+      className="serif"
+      style={{
+        fontSize: 44,
+        letterSpacing: '-0.02em',
+        marginBottom: 12,
+        lineHeight: 1.05,
+      }}
+    >
+      {name}
+    </h1>
+    {tagline && (
+      <p
+        style={{
+          fontSize: 18,
+          color: 'var(--text-secondary)',
+          fontStyle: 'italic',
+          lineHeight: 1.4,
+        }}
+      >
+        {tagline}
+      </p>
+    )}
+  </div>
+);
+
+const AudienceDot = () => (
+  <div
+    style={{
+      flex: '0 0 8px',
+      width: 8,
+      height: 8,
+      borderRadius: '50%',
+      background: 'var(--accent)',
+      marginTop: 7,
+    }}
+  />
+);
+
+const FeatureNumber = ({ index }) => (
+  <div
+    style={{
+      flex: '0 0 28px',
+      width: 28,
+      height: 28,
+      borderRadius: 6,
+      background: 'var(--bg-elevated)',
+      border: '1px solid var(--border)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 12,
+      fontWeight: 500,
+      color: 'var(--accent)',
+    }}
+  >
+    {String(index + 1).padStart(2, '0')}
+  </div>
+);
+
+const KpiCard = ({ metric, why }) => (
+  <div
+    style={{
+      padding: 14,
+      background: 'var(--bg-elevated)',
+      borderRadius: 10,
+      border: '1px solid var(--border)',
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 500,
+        marginBottom: 4,
+        fontSize: 14,
+        color: 'var(--accent)',
+      }}
+    >
+      {metric}
+    </div>
+    {why && (
+      <div className="text-xs text-muted" style={{ lineHeight: 1.45 }}>
+        {why}
+      </div>
+    )}
+  </div>
+);
+
 const ConceptBrief = ({ concept }) => {
   if (!concept) return null;
 
@@ -48,48 +151,8 @@ const ConceptBrief = ({ concept }) => {
 
   return (
     <div className="grid gap-4" style={{ gridTemplateColumns: '1fr' }}>
-      {/* Hero */}
-      <div
-        className="card"
-        style={{
-          padding: '40px 32px',
-          background:
-            'linear-gradient(135deg, rgba(212,165,116,0.08) 0%, var(--bg-elevated) 100%)',
-          border: '1px solid var(--border)',
-        }}
-      >
-        <div
-          className="text-xs mono mb-3"
-          style={{ color: 'var(--accent)', letterSpacing: '0.12em' }}
-        >
-          PRODUCT CONCEPT
-        </div>
-        <h1
-          className="serif"
-          style={{
-            fontSize: 44,
-            letterSpacing: '-0.02em',
-            marginBottom: 12,
-            lineHeight: 1.05,
-          }}
-        >
-          {name}
-        </h1>
-        {tagline && (
-          <p
-            style={{
-              fontSize: 18,
-              color: 'var(--text-secondary)',
-              fontStyle: 'italic',
-              lineHeight: 1.4,
-            }}
-          >
-            {tagline}
-          </p>
-        )}
-      </div>
+      <HeroSection name={name} tagline={tagline} />
 
-      {/* Description */}
       {description && (
         <Section label="What it is">
           <p
@@ -105,7 +168,6 @@ const ConceptBrief = ({ concept }) => {
         </Section>
       )}
 
-      {/* Two-column row: Audience + Value prop */}
       <div
         className="grid gap-4"
         style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}
@@ -113,23 +175,14 @@ const ConceptBrief = ({ concept }) => {
         {audience.length > 0 && (
           <Section label="Who it's for">
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {audience.map((a, i) => (
+              {audience.map((member, i) => (
                 <Bullet key={i}>
-                  <div
-                    style={{
-                      flex: '0 0 8px',
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      background: 'var(--accent)',
-                      marginTop: 7,
-                    }}
-                  />
+                  <AudienceDot />
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 500, marginBottom: 2 }}>{a.role}</div>
-                    {a.painPoint && (
+                    <div style={{ fontWeight: 500, marginBottom: 2 }}>{member.role}</div>
+                    {member.painPoint && (
                       <div className="text-sm text-muted" style={{ lineHeight: 1.45 }}>
-                        {a.painPoint}
+                        {member.painPoint}
                       </div>
                     )}
                   </div>
@@ -154,7 +207,7 @@ const ConceptBrief = ({ concept }) => {
             </div>
             {valueProposition.supports && valueProposition.supports.length > 0 && (
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {valueProposition.supports.map((s, i) => (
+                {valueProposition.supports.map((support, i) => (
                   <li
                     key={i}
                     style={{
@@ -167,7 +220,7 @@ const ConceptBrief = ({ concept }) => {
                     }}
                   >
                     <span style={{ color: 'var(--accent)' }}>→</span>
-                    <span>{s}</span>
+                    <span>{support}</span>
                   </li>
                 ))}
               </ul>
@@ -176,35 +229,17 @@ const ConceptBrief = ({ concept }) => {
         )}
       </div>
 
-      {/* Features */}
       {features.length > 0 && (
         <Section label="Key features">
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {features.map((f, i) => (
+            {features.map((feature, i) => (
               <Bullet key={i}>
-                <div
-                  style={{
-                    flex: '0 0 28px',
-                    width: 28,
-                    height: 28,
-                    borderRadius: 6,
-                    background: 'var(--bg-elevated)',
-                    border: '1px solid var(--border)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: 'var(--accent)',
-                  }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </div>
+                <FeatureNumber index={i} />
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 500, marginBottom: 2 }}>{f.name}</div>
-                  {f.rationale && (
+                  <div style={{ fontWeight: 500, marginBottom: 2 }}>{feature.name}</div>
+                  {feature.rationale && (
                     <div className="text-sm text-muted" style={{ lineHeight: 1.45 }}>
-                      {f.rationale}
+                      {feature.rationale}
                     </div>
                   )}
                 </div>
@@ -214,39 +249,14 @@ const ConceptBrief = ({ concept }) => {
         </Section>
       )}
 
-      {/* KPIs */}
       {kpis.length > 0 && (
         <Section label="Success metrics">
           <div
             className="grid gap-3"
             style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}
           >
-            {kpis.map((k, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 14,
-                  background: 'var(--bg-elevated)',
-                  borderRadius: 10,
-                  border: '1px solid var(--border)',
-                }}
-              >
-                <div
-                  style={{
-                    fontWeight: 500,
-                    marginBottom: 4,
-                    fontSize: 14,
-                    color: 'var(--accent)',
-                  }}
-                >
-                  {k.metric}
-                </div>
-                {k.why && (
-                  <div className="text-xs text-muted" style={{ lineHeight: 1.45 }}>
-                    {k.why}
-                  </div>
-                )}
-              </div>
+            {kpis.map((kpi, i) => (
+              <KpiCard key={i} metric={kpi.metric} why={kpi.why} />
             ))}
           </div>
         </Section>
