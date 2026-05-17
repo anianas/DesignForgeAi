@@ -34,11 +34,22 @@ next-app/
 │   ├── layout.jsx              Root layout, providers
 │   ├── globals.css
 │   ├── page.jsx                Landing
-│   ├── auth/page.jsx           Login / signup
-│   ├── dashboard/page.jsx      Project grid
-│   ├── new/page.jsx            Wizard (project type → idea)
-│   ├── generate/[id]/page.jsx  Concept-generation progress
-│   ├── project/[id]/page.jsx   Concept brief + UI mock + Code (advanced)
+│   ├── auth/
+│   │   ├── page.jsx            Login / signup (thin shell)
+│   │   └── AuthForm.jsx        Login / signup form logic
+│   ├── dashboard/
+│   │   ├── page.jsx            Project grid (thin shell)
+│   │   └── DashboardContent.jsx  Project grid logic
+│   ├── new/
+│   │   ├── page.jsx            Wizard shell
+│   │   └── NewProjectWizard.jsx  Wizard logic (project type → idea)
+│   ├── generate/[id]/
+│   │   ├── page.jsx            Generation progress shell
+│   │   ├── GeneratingContent.jsx  Animated step display
+│   │   └── useGenerationPolling.js  Polling hook
+│   ├── project/[id]/
+│   │   ├── page.jsx            Project view shell
+│   │   └── ProjectContent.jsx  Concept brief + UI mock + Code (advanced)
 │   └── api/
 │       ├── auth/{login,signup,me}/route.js
 │       ├── project/route.js              GET list, POST create
@@ -53,6 +64,7 @@ next-app/
 │   ├── Providers.jsx
 │   ├── Navbar.jsx
 │   ├── Modal.jsx
+│   ├── StatusBadge.jsx         Project status pill
 │   ├── ConceptBrief.jsx
 │   ├── LivePreview.jsx
 │   ├── transformCode.js        Babel plugin: rewrites imports to __DF_M
@@ -62,7 +74,8 @@ next-app/
     ├── auth.js                 JWT helpers + Next.js Response shortcuts
     ├── store.js                In-memory Maps + seeded demo user
     ├── aiService.js            Concept + code generation, validation, retry
-    ├── generationService.js    Two-stage pipeline + step animations
+    ├── generationService.js    Two-stage pipeline orchestration
+    ├── generationSteps.js      Step definitions + animation metadata
     └── zip.js                  Vite scaffold ZIP via archiver
 ```
 
